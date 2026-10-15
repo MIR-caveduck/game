@@ -27,7 +27,47 @@
  .gamePage .board{max-width:none!important;width:auto;max-height:none;gap:7px;margin:0 auto}
  .gamePage .card{aspect-ratio:3/4}
 }
-</style></head><body><main><nav class="topnav"><button data-page="home" class="navbtn active">🏠 입구</button><button data-page="game" class="navbtn">🃏 게임</button><button data-page="gallery" class="navbtn">🖼️ 갤러리</button></nav><section class="page" id="page-home"><header><h1>🖤 루첼의 기억 마법 🖤</h1><p>SD 루첼의 표정을 기억하고 같은 카드를 찾아보세요! · 비밀 일러스트 해금판</p></header><section class="panel"><h2>🎮 난이도 선택</h2><div id="levels" class="levels"></div><div class="best" id="best"></div><div class="best" id="goal"></div><button class="action launch" id="launch">✨ 기억 마법 시작하기</button></section></section><section class="page gamePage" id="page-game" hidden><div class="gameHead"><h2>🃏 기억 마법 <span id="gameLevel"></span></h2><button class="action secondary" id="changeLevel">난이도 변경</button></div><section class="panel gameControls"><div class="stats"><div class="stat"><b id="time">0.0</b><span>시간(초)</span></div><div class="stat"><b id="moves">0</b><span>시도</span></div><div class="stat"><b id="pairs">0 / 6</b><span>맞춘 짝</span></div><div class="stat"><b id="misses">0</b><span>실수</span></div></div><div class="actions"><button class="action" id="start">🔄 새 게임</button><button class="action secondary" id="peek">👀 미리보기</button></div><div id="notice" class="notice" aria-live="polite">카드를 눌러 게임을 시작하세요!</div></section><div class="boardWrap"><div id="board" class="board" aria-label="기억력 카드 게임"></div></div></section><section class="page" id="page-gallery" hidden><section class="panel"><h2>🔐 비밀 일러스트 갤러리 <span id="galleryCount" style="font-size:12px;color:#ffb1d1"></span></h2><p style="font-size:12px;color:#d5bfd8">각 난이도를 제한 시간 안에 클리어하면 일러스트가 해금돼요. 해금 기록은 이 기기에 저장됩니다.</p><div id="gallery" class="gallery"></div></section></section><p class="footer">PC 화면 최적화 · 인터넷 불필요 · 최고 기록은 이 기기에 저장됩니다</p></main><div class="overlay" id="overlay"><div class="modal"><h2 id="resultTitle"></h2><p id="resultText"></p><button class="action" id="again">다시 도전하기</button><button class="action secondary" id="close">닫기</button><button class="action secondary" id="toGallery">🖼️ 갤러리</button></div></div>
+
+#musicDock{position:fixed;right:18px;top:12px;z-index:20;width:330px;max-width:calc(100vw - 24px);font-family:inherit}
+#musicDock button{cursor:pointer;color:#fce3f4}
+#musicMini{width:100%;display:flex;align-items:center;gap:9px;padding:9px 12px;background:#35233fea;border:1px solid #b17aab;border-radius:15px;box-shadow:0 8px 30px #0007;backdrop-filter:blur(12px);text-align:left}
+#musicMini .miniInfo{flex:1;min-width:0}#musicMini strong,#musicMini small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#musicMini strong{font-size:13px}#musicMini small{font-size:11px;color:#d5b6d0}
+#musicPanel{margin-top:7px;padding:14px;background:#251b32f5;border:1px solid #9a6b9d;border-radius:17px;box-shadow:0 12px 35px #0009;backdrop-filter:blur(18px)}
+#musicPanel[hidden]{display:none}
+.musicEyebrow{color:#efb1d9;font-size:11px;font-weight:800;letter-spacing:.13em;margin-bottom:10px}
+.musicTitle{font-weight:800;color:#ffe5f5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.musicArtist{font-size:12px;color:#cdaaca;margin:4px 0 12px}
+.musicControls{display:flex;justify-content:center;gap:10px;align-items:center;margin:10px 0}
+.musicControls button,.musicListButton{border:1px solid #745579;background:#463150;border-radius:10px;padding:8px 10px}
+.musicControls button.active{background:#9b557f;border-color:#ffc2df}
+#musicPlay{background:#e89ac8;color:#211526!important;font-weight:900;font-size:17px;min-width:46px}
+#musicSeek{width:100%;accent-color:#f2a4d4;cursor:pointer}
+.musicTime{display:flex;justify-content:space-between;color:#cdaaca;font-size:11px}
+.musicVolume{display:flex;align-items:center;gap:10px;margin-top:9px;color:#d5b6d0;font-size:12px}
+#musicVolume{flex:1;accent-color:#f2a4d4}
+#musicList{max-height:220px;overflow:auto;margin-top:10px;display:grid;gap:4px}
+#musicList[hidden]{display:none}
+.musicItem{width:100%;text-align:left;background:#362840;border:1px solid transparent;border-radius:9px;padding:8px 9px;color:#f5e1f0}
+.musicItem.current{border-color:#ef9bcf;background:#57354f}
+.musicItem span{display:block;font-size:12px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.musicItem small{display:block;font-size:11px;color:#cbaaca;margin-top:3px}
+@media(max-width:700px){#musicDock{right:8px;top:8px;width:290px}#musicMini{padding:7px 9px}}
+</style></head><body>
+<aside id="musicDock" aria-label="루첼의 마법 라디오">
+ <button id="musicMini" type="button" aria-expanded="false"><span>🎵</span><span class="miniInfo"><strong id="musicMiniTitle">카타오모이</strong><small id="musicMiniArtist">다즈비</small></span><span id="musicMiniState">▶</span><span id="musicArrow">▾</span></button>
+ <div id="musicPanel" hidden>
+  <div class="musicEyebrow">✦ RUCHEL'S MAGIC RADIO ✦</div>
+  <div class="musicTitle" id="musicTitle"></div><div class="musicArtist" id="musicArtist"></div>
+  <input id="musicSeek" type="range" min="0" max="1000" value="0" aria-label="재생 위치">
+  <div class="musicTime"><span id="musicCurrentTime">0:00</span><span id="musicDuration">0:00</span></div>
+  <div class="musicControls"><button id="musicShuffle" title="셔플">🔀</button><button id="musicPrev" title="이전 곡">⏮</button><button id="musicPlay" title="재생/일시정지">▶</button><button id="musicNext" title="다음 곡">⏭</button><button id="musicRepeat" title="한 곡 반복">🔁</button></div>
+  <div class="musicVolume"><span>🔊</span><input id="musicVolume" type="range" min="0" max="100" value="25" aria-label="볼륨"><span id="musicVolumeLabel">25%</span></div>
+  <button class="musicListButton" id="musicListToggle" style="width:100%;margin-top:12px">♫ 재생목록 펼치기 (22곡)</button>
+  <div id="musicList" hidden></div>
+ </div>
+ <audio id="musicAudio" preload="metadata"></audio>
+</aside>
+<main><nav class="topnav"><button data-page="home" class="navbtn active">🏠 입구</button><button data-page="game" class="navbtn">🃏 게임</button><button data-page="gallery" class="navbtn">🖼️ 갤러리</button></nav><section class="page" id="page-home"><header><h1>🖤 루첼의 기억 마법 🖤</h1><p>SD 루첼의 표정을 기억하고 같은 카드를 찾아보세요! · 비밀 일러스트 해금판</p></header><section class="panel"><h2>🎮 난이도 선택</h2><div id="levels" class="levels"></div><div class="best" id="best"></div><div class="best" id="goal"></div><button class="action launch" id="launch">✨ 기억 마법 시작하기</button></section></section><section class="page gamePage" id="page-game" hidden><div class="gameHead"><h2>🃏 기억 마법 <span id="gameLevel"></span></h2><button class="action secondary" id="changeLevel">난이도 변경</button></div><section class="panel gameControls"><div class="stats"><div class="stat"><b id="time">0.0</b><span>시간(초)</span></div><div class="stat"><b id="moves">0</b><span>시도</span></div><div class="stat"><b id="pairs">0 / 6</b><span>맞춘 짝</span></div><div class="stat"><b id="misses">0</b><span>실수</span></div></div><div class="actions"><button class="action" id="start">🔄 새 게임</button><button class="action secondary" id="peek">👀 미리보기</button></div><div id="notice" class="notice" aria-live="polite">카드를 눌러 게임을 시작하세요!</div></section><div class="boardWrap"><div id="board" class="board" aria-label="기억력 카드 게임"></div></div></section><section class="page" id="page-gallery" hidden><section class="panel"><h2>🔐 비밀 일러스트 갤러리 <span id="galleryCount" style="font-size:12px;color:#ffb1d1"></span></h2><p style="font-size:12px;color:#d5bfd8">각 난이도를 제한 시간 안에 클리어하면 일러스트가 해금돼요. 해금 기록은 이 기기에 저장됩니다.</p><div id="gallery" class="gallery"></div></section></section><p class="footer">PC 화면 최적화 · 인터넷 불필요 · 최고 기록은 이 기기에 저장됩니다</p></main><div class="overlay" id="overlay"><div class="modal"><h2 id="resultTitle"></h2><p id="resultText"></p><button class="action" id="again">다시 도전하기</button><button class="action secondary" id="close">닫기</button><button class="action secondary" id="toGallery">🖼️ 갤러리</button></div></div>
 <div class="overlay" id="magicOverlay" role="dialog" aria-modal="true" aria-labelledby="magicTitle"><div class="modal">
 <div style="font-size:42px">🪄</div><h2 id="magicTitle">루첼의 기억 교란!</h2><p id="magicLine"></p>
 <p style="font-size:13px;color:#ffd4e7">아직 맞추지 못한 카드가 전부 섞여요!<br>이미 맞춘 카드는 그대로 · 경고 중 타이머 정지</p>
@@ -153,4 +193,56 @@ function showPage(page){document.querySelectorAll('.page').forEach(e=>e.hidden=e
 document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
 $('launch').onclick=()=>{newGame();showPage('game')};$('changeLevel').onclick=()=>showPage('home');
 levelButtons();newGame();renderGallery();showPage('home');
+
+const MUSIC_TRACKS=[{"title": "카타오모이 (カタオモイ)", "artist": "다즈비", "src": "music/카타오모이-다즈비.mp3"}, {"title": "사랑을 전하고 싶다든가", "artist": "루첼", "src": "music/01-love.mp3"}, {"title": "혼잣말 (ひとりごつ)", "artist": "하치와레", "src": "music/혼잣말(ひとりごつ)-하치와레.mp3"}, {"title": "빨간 바다", "artist": "베이블루 아카데미", "src": "music/빨간 바다 (prod.그냥노창)-베이블루 아카데미.mp3"}, {"title": "천재는 시발 새끼들한테 미움받아 단명한다", "artist": "루루", "src": "music/천재는 시발 새끼들한테 미움받아 단명한다-루루.mp3"}, {"title": "야생화", "artist": "미현영", "src": "music/야생화 - 미현영.mp3"}, {"title": "melty", "artist": "베이블루 아카데미", "src": "music/05-melty.mp3"}, {"title": "도원경 (桃源境)", "artist": "민결희, 랑코, 재리포터, 성기사샬롯", "src": "music/도원경(桃源境) - 민결희, 랑코, 재리포터, 성기사샬롯.mp3"}, {"title": "FAKE LOVE", "artist": "크앙희, im미오", "src": "music/FAKE LOVE - 크앙희, im미오.mp3"}, {"title": "WONDERLAND", "artist": "구슬요, 양도끼, 여르미, 힌콕", "src": "music/WONDERLAND - 구슬요, 양도끼, 여르미, 힌콕.mp3"}, {"title": "꿈을 열어줘", "artist": "베이블루 아카데미", "src": "music/꿈을 열어줘 (prod.유키부기)-베이블루 아카데미.mp3"}, {"title": "어떻게 사랑이 그래요", "artist": "윤이제", "src": "music/어떻게 사랑이 그래요 - 윤이제.mp3"}, {"title": "바다의 유령 (海の幽霊)", "artist": "요네즈 켄시", "src": "music/바다의 유령(海の幽霊)-요네즈 켄시.mp3"}, {"title": "Be Happy!", "artist": "베이블루 아카데미", "src": "music/Be Happy! (prod.김쉐인)-베이블루 아카데미.mp3"}, {"title": "좋아하니까 (好きだから。)", "artist": "루첼, 나노", "src": "music/04-sukidakara.mp3"}, {"title": "살인 아니고 사랑인데요 (Feat. $ATSUKI & 백노루양 of 나의 노랑말들)", "artist": "루루", "src": "music/살인 아니고 사랑인데요 (Feat. $ATSUKI & 백노루양 of 나의 노랑말들)-루루.mp3"}, {"title": "메리크리 (メリクリ)", "artist": "루첼", "src": "music/02-merikuri.mp3"}, {"title": "소나기 (Feat. 10cm)", "artist": "용준형", "src": "music/소나기 (Feat. 10cm)-용준형.mp3"}, {"title": "피토하겠네", "artist": "루루", "src": "music/피토하겠네-루루.mp3"}, {"title": "널위해", "artist": "루루", "src": "music/널위해-루루.mp3"}, {"title": "KISS OF LIFE", "artist": "따린, 마냥", "src": "music/KISS OF LIFE - 따린, 마냥.mp3"}, {"title": "괴물 (怪物)", "artist": "루첼", "src": "music/03-kaibutsu.mp3"}];
+const m=id=>document.getElementById(id);
+const audio=m('musicAudio');
+let musicIndex=0,musicShuffle=false,musicRepeat=false;
+audio.volume=.25;
+const fmtTime=t=>Number.isFinite(t)?Math.floor(t/60)+':'+String(Math.floor(t%60)).padStart(2,'0'):'0:00';
+function drawMusicList(){
+ m('musicList').replaceChildren();
+ MUSIC_TRACKS.forEach((song,i)=>{
+ const b=document.createElement('button');b.className='musicItem'+(i===musicIndex?' current':'');
+ const title=document.createElement('span');title.textContent=String(i+1).padStart(2,'0')+'. '+song.title;
+ const artist=document.createElement('small');artist.textContent=song.artist;
+ b.append(title,artist);b.onclick=()=>loadMusic(i,true);m('musicList').append(b);
+ });
+}
+function loadMusic(index,play=false){
+ musicIndex=(index+MUSIC_TRACKS.length)%MUSIC_TRACKS.length;
+ const song=MUSIC_TRACKS[musicIndex];audio.src=encodeURI(song.src);
+ m('musicTitle').textContent=m('musicMiniTitle').textContent=song.title;
+ m('musicArtist').textContent=m('musicMiniArtist').textContent=song.artist;
+ m('musicSeek').value=0;m('musicCurrentTime').textContent='0:00';m('musicDuration').textContent='0:00';
+ drawMusicList();if(play)audio.play().catch(()=>{});
+}
+function stepMusic(delta){
+ if(musicShuffle && MUSIC_TRACKS.length>1){
+ let next;do{next=Math.floor(Math.random()*MUSIC_TRACKS.length)}while(next===musicIndex);
+ loadMusic(next,true);
+ }else loadMusic(musicIndex+delta,true);
+}
+m('musicMini').onclick=()=>{
+ const p=m('musicPanel');p.hidden=!p.hidden;
+ m('musicMini').setAttribute('aria-expanded',String(!p.hidden));
+ m('musicArrow').textContent=p.hidden?'▾':'▴';
+};
+m('musicPlay').onclick=()=>{if(audio.paused)audio.play().catch(()=>{});else audio.pause()};
+m('musicPrev').onclick=()=>{if(audio.currentTime>3){audio.currentTime=0}else stepMusic(-1)};
+m('musicNext').onclick=()=>stepMusic(1);
+m('musicShuffle').onclick=()=>{musicShuffle=!musicShuffle;m('musicShuffle').classList.toggle('active',musicShuffle)};
+m('musicRepeat').onclick=()=>{musicRepeat=!musicRepeat;m('musicRepeat').classList.toggle('active',musicRepeat)};
+m('musicListToggle').onclick=()=>{m('musicList').hidden=!m('musicList').hidden;m('musicListToggle').textContent=m('musicList').hidden?'♫ 재생목록 펼치기 (22곡)':'♫ 재생목록 접기'};
+m('musicVolume').oninput=()=>{audio.volume=Number(m('musicVolume').value)/100;m('musicVolumeLabel').textContent=m('musicVolume').value+'%'};
+m('musicSeek').oninput=()=>{if(Number.isFinite(audio.duration)&&audio.duration>0)audio.currentTime=Number(m('musicSeek').value)/1000*audio.duration};
+audio.addEventListener('timeupdate',()=>{
+ m('musicCurrentTime').textContent=fmtTime(audio.currentTime);
+ if(Number.isFinite(audio.duration)&&audio.duration>0)m('musicSeek').value=Math.round(audio.currentTime/audio.duration*1000);
+});
+audio.addEventListener('loadedmetadata',()=>m('musicDuration').textContent=fmtTime(audio.duration));
+audio.addEventListener('play',()=>{m('musicPlay').textContent='⏸';m('musicMiniState').textContent='♫'});
+audio.addEventListener('pause',()=>{m('musicPlay').textContent='▶';m('musicMiniState').textContent='▶'});
+audio.addEventListener('ended',()=>{if(musicRepeat){audio.currentTime=0;audio.play().catch(()=>{})}else stepMusic(1)});
+loadMusic(0,false);
 </script></body></html>
